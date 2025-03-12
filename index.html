@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Students Portal</title>
+  <style>
+    /* General styles */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f9;
+    }
+
+    /* Navigation bar */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #2d89ef;
+      color: white;
+      padding: 15px 20px;
+    }
+
+    /* Student ID Input Section */
+    .student-id-section {
+      text-align: center;
+      margin: 20px auto;
+      padding: 20px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      max-width: 400px;
+    }
+
+    .student-id-section input {
+      width: 80%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+
+    .student-id-section button {
+      background-color: #2d89ef;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .student-id-section button:hover {
+      background-color: #1e5bbf;
+    }
+
+    .error-message {
+      color: red;
+      margin-top: 10px;
+    }
+
+    /* Student Info Section */
+    .student-info {
+      text-align: center;
+      margin: 20px auto;
+      padding: 20px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      max-width: 400px;
+      display: none; /* Hidden by default */
+    }
+
+    .student-info h2 {
+      color: #2d89ef;
+    }
+
+    .student-info p {
+      color: #555;
+      font-size: 1.2em;
+    }
+
+    /* Hero Section */
+    .hero {
+      text-align: center;
+      background-color: #e3f2fd;
+      padding: 50px 20px;
+      display: none; /* Hidden by default */
+    }
+
+    .hero h1 {
+      color: #2d89ef;
+      margin-bottom: 10px;
+    }
+
+    .hero p {
+      color: #555;
+      font-size: 1.2em;
+    }
+
+    .hero button {
+      background-color: #2d89ef;
+      color: white;
+      padding: 15px 30px;
+      border: none;
+      border-radius: 5px;
+      font-size: 1.2em;
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .hero button:hover {
+      background-color: #1e5bbf;
+      transform: translateY(-3px);
+      box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .hero button:active {
+      transform: translateY(1px);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Quick Links Section */
+    .quick-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin: 30px 0;
+      display: none; /* Hidden by default */
+    }
+
+    .quick-links .card {
+      background-color: white;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      margin: 10px;
+      padding: 20px;
+      width: 280px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      transition: transform 0.2s ease;
+    }
+
+    .quick-links .card:hover {
+      transform: translateY(-5px);
+    }
+
+    .quick-links .card img {
+      width: 100px;
+      height: 100px;
+      margin-bottom: 10px;
+    }
+
+    .quick-links .card h3 {
+      margin-bottom: 10px;
+      color: #2d89ef;
+    }
+
+    .quick-links .card p {
+      color: #555;
+    }
+
+    /* Popup Modal */
+    .popup {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: none;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .popup-content {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .popup-content button {
+      padding: 10px 20px;
+      margin: 10px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .popup-content button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .popup-content button:active {
+      transform: translateY(1px);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Chatbot Avatar */
+    .chatbot-avatar {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 60px;
+      height: 60px;
+      background: url('images/chat.jpeg') no-repeat center center;
+      background-size: cover;
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    .chatbot-window {
+      position: fixed;
+      bottom: 90px;
+      right: 20px;
+      width: 300px;
+      height: 400px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      display: none;
+      flex-direction: column;
+    }
+
+    .chatbot-window iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      border-radius: 10px;
+    }
+
+    .chatbot-window .close-button {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: #ff5c5c;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 25px;
+      height: 25px;
+      cursor: pointer;
+      font-size: 1em;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* Footer */
+    .footer {
+      background-color: #2d89ef;
+      color: white;
+      text-align: center;
+      padding: 10px 0;
+      margin-top: 20px;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 1.8em;
+      }
+
+      .quick-links {
+        flex-direction: column;
+      }
+
+      .quick-links .card {
+        width: 90%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <div class="navbar">
+    <div class="logo">
+      <h2>Student Portal</h2>
+    </div>
+  </div>
+
+  <!-- Student ID Input Section -->
+  <div class="student-id-section">
+    <h2>Enter Your Student ID</h2>
+    <input type="text" id="studentId" placeholder="Student ID">
+    <button onclick="validateStudentId()">Submit</button>
+    <p class="error-message" id="errorMessage"></p>
+  </div>
+
+  <!-- Student Info Section -->
+  <div class="student-info" id="studentInfo">
+    <h2>Student Information</h2>
+    <p><strong>Name:</strong> <span id="studentName"></span></p>
+    <p><strong>Group:</strong> <span id="studentGroup"></span></p>
+    <p><strong>Grade:</strong> <span id="studentGrade"></span></p>
+  </div>
+
+  <!-- Hero Section -->
+  <div class="hero" id="heroSection">
+    <h1>Welcome To Your Student's Portal</h1>
+    <p>Your one-stop platform for accessing school resources, updates, and more.</p>
+    <button onclick="openPopup()">Explore</button>
+  </div>
+
+  <!-- Quick Links Section -->
+  <div class="quick-links" id="quickLinksSection">
+    <div class="card" onclick="window.location.href='assignments.html'">
+      <img src="images/ass.jpeg" alt="Assignments">
+      <h3>Assignments</h3>
+      <p>Access and submit your assignments with ease.</p>
+    </div>
+    <div class="card" onclick="window.location.href='https://docs.google.com/spreadsheets/d/e/2PACX-1vQdchoXRJOkvwC5XQ7HxbtPKLEXKpJcFjR1f9Vtyv4Vcg5PPa4ziSSjAC8m4AozBWFpt3GPeMpB_w5C/pubhtml'">
+      <img src="images/c.jpeg" alt="Calendar">
+      <h3>Calendar</h3>
+      <p>Stay updated with your class schedules.</p>
+    </div>
+    <div class="card" onclick="window.location.href='Eresults.html'">
+      <img src="images/e.jpeg" alt="Results">
+      <h3>Results</h3>
+      <p>Check your academic performance anytime.</p>
+    </div>
+  </div>
+
+  <!-- Popup Modal -->
+  <div class="popup" id="popup">
+    <div class="popup-content">
+      <button onclick="window.location.href='read.html'">Read</button>
+      <button onclick="window.location.href='quiz.html'">Quiz</button>
+      <button onclick="window.location.href='kiddychat.html'">KiddyChat</button>
+      <button onclick="closePopup()">Close</button>
+    </div>
+  </div>
+
+  <!-- Chatbot Avatar -->
+  <div class="chatbot-avatar" onclick="openChatbot()"></div>
+
+  <!-- Chatbot Window -->
+  <div class="chatbot-window" id="chatbot-window">
+    <button class="close-button" onclick="closeChatbot()">×</button>
+    <iframe src="chatbot.html"></iframe>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p>&copy; 2025 School Students Portal. All Rights Reserved.</p>
+  </div>
+
+  <script type="module">
+    // Import Firebase SDK
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
+
+    // Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyBxORm1Up_vSQHnT5WVTqP9I7HKWKsBBm4",
+      authDomain: "school-mangement-8ca60.firebaseapp.com",
+      projectId: "school-mangement-8ca60",
+      storageBucket: "school-mangement-8ca60.firebasestorage.app",
+      messagingSenderId: "313997383681",
+      appId: "1:313997383681:web:7b1e55f6c036120c5fc800",
+      measurementId: "G-P3JST7V88B"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // Validate Student ID
+    window.validateStudentId = async function () {
+      const studentId = document.getElementById('studentId').value;
+      const errorMessage = document.getElementById('errorMessage');
+
+      if (!studentId) {
+        errorMessage.textContent = "Please enter a student ID.";
+        return;
+      }
+
+      try {
+        const studentDoc = await getDoc(doc(db, 'students', studentId));
+        if (studentDoc.exists()) {
+          const studentData = studentDoc.data();
+
+          // Display student information
+          document.getElementById('studentName').textContent = studentData.name;
+          document.getElementById('studentGroup').textContent = studentData.group;
+          document.getElementById('studentGrade').textContent = studentData.grade;
+
+          // Show student info and portal content
+          document.querySelector('.student-id-section').style.display = 'none';
+          document.getElementById('studentInfo').style.display = 'block';
+          document.getElementById('heroSection').style.display = 'block';
+          document.getElementById('quickLinksSection').style.display = 'flex';
+        } else {
+          errorMessage.textContent = "Invalid student ID. Please try again.";
+        }
+      } catch (error) {
+        console.error('Error validating student ID: ', error);
+        errorMessage.textContent = "An error occurred. Please try again.";
+      }
+    };
+
+    // Open the popup
+    function openPopup() {
+      document.getElementById('popup').style.display = 'flex';
+    }
+
+    // Close the popup
+    function closePopup() {
+      document.getElementById('popup').style.display = 'none';
+    }
+
+    // Open the chatbot window
+    function openChatbot() {
+      document.getElementById('chatbot-window').style.display = 'flex';
+    }
+
+    // Close the chatbot window
+    function closeChatbot() {
+      document.getElementById('chatbot-window').style.display = 'none';
+    }
+  </script>
+</body>
+</html>
